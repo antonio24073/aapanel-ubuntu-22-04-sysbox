@@ -1,0 +1,42 @@
+services:
+  aap:
+    runtime: sysbox-runc
+    user: root
+    image: antonio24073/aapanel:ubuntu-22-04-sysbox
+    container_name: aapanel
+    ports: 
+      - ${AAP_PORT}:7800
+      - ${FTP_PORT}:21
+      - ${SSH_PORT}:22
+      - ${HTTPS_PORT}:443
+      - ${HTTP_PORT}:80
+      - ${PMA_PORT}:888
+    volumes:
+      - ./vol/www/wwwroot:/www/wwwroot
+      - ./vol/www/server/data:/www/server/data
+      - ./vol/www/server/nodejs:/www/server/nodejs
+      - ./vol/www/server/panel/vhost:/www/server/panel/vhost
+      - ./vol/www/server/panel/data:/www/server/panel/data
+      - ./vol/www/wwwlogs:/www/wwwlogs
+      - ./vol/www/backup:/www/backup
+      # - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./vol/provision/entrypoint:/provision/entrypoint
+      - ./vol/etc/resolv.conf:/etc/resolv.conf
+      - ./vol/etc/hosts:/etc/hosts
+      - ./docker-file/provision/wp-cli.phar:/usr/bin/wp
+    env_file:
+      - ./.env
+    command: sh /provision/entrypoint/cmd.sh
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: 1
+    ulimits:
+      nofile:
+        soft: 1024
+        hard: 1048576
+  wt:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 1800
+
+    
