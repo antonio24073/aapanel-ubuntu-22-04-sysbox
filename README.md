@@ -21,7 +21,7 @@ Rename `.env.example` to `.env` and change the variables
 ```
 make build
 make mkdir
-make fix_permissions
+make perm
 make up
 make bt
 14
