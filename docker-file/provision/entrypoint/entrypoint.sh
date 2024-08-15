@@ -24,9 +24,11 @@ fi
 [[ ! -z "$AAP_PASS" ]] && printf "$AAP_PASS" | bt 5
 [[ ! -z "$AAP_USER" ]] && printf "$AAP_USER" | bt 6
 [[ ! -z "$AAP_PATH" ]] &&  echo "/$AAP_PATH" > /www/server/panel/data/admin_path.pl
-# [[ ! -z "$AAP_PORT" ]] &&   echo "$AAP_PORT" > /www/server/panel/data/port.pl
+[[ ! -z "$AAP_PORT" ]] &&   echo "$AAP_PORT" > /www/server/panel/data/port.pl
 [[ ! -z "$REDIS_PASS" ]] && sudo sed -z -i "s/# requirepass foobared/requirepass $REDIS_PASS\n/g" /www/server/redis/redis.conf
 
 sh /provision/entrypoint/restart.sh
+
+chmod +x /sbin/init
 
 exec /sbin/init --log-level=err

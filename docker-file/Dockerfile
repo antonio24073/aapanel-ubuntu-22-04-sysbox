@@ -1,6 +1,18 @@
 
 FROM nestybox/ubuntu-jammy-systemd-docker
 
+ENV TIMEZONE=America/Sao_Paulo
+ENV LINUX_ROOT_PASS=ha4bgvmRLPk4C
+ENV LINUX_USER_NAME=username
+ENV LINUX_USER_PASS=9RHodjidWti7R
+
+ENV AAP_PORT=7800
+ENV AAP_USER=username
+ENV AAP_PASS=T434zqsWqyX4h 
+ENV AAP_PATH=aap_login
+ENV DB_ROOT_PASS=hcjR4Vgj3TvRK
+ENV REDIS_PASS=MEArt7Xjairzf
+
 USER root
 
 # ini SO updates, installs

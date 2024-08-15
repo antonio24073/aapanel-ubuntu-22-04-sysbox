@@ -2,7 +2,6 @@
 
 #ini restart aapanel
 bt 1
-
 chown mysql:mysql /www/server/data
 /www/server/mysql/scripts/mysql_install_db --user=mysql
 /etc/init.d/mysqld start
@@ -18,4 +17,6 @@ chown mysql:mysql /www/server/data
 /etc/init.d/httpd restart
 /etc/init.d/httpd start
 /etc/init.d/memcached restart
+systemctl start docker
+systemctl start containerd
 #end restart aapanel

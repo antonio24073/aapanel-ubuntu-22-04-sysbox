@@ -8,20 +8,20 @@ services:
       - ${AAP_PORT}:7800
       - ${FTP_PORT}:21
       - ${SSH_PORT}:22
-      - ${HTTPS_PORT}:443
-      - ${HTTP_PORT}:80
+      - 443:443
+      - 80:80
       - ${PMA_PORT}:888
-      - 587:587
-      - 465:465
-      - 25:25
-      - 995:995
-      - 110:110
-      - 993:993
-      - 143:143
+      # - 587:587
+      # - 465:465
+      # - 25:25
+      # - 995:995
+      # - 110:110
+      # - 993:993
+      # - 143:143
     volumes:
       - ./vol/www/wwwroot:/www/wwwroot
       - ./vol/www/server/data:/www/server/data
-      - ./vol/www/server/nodejs:/www/server/nodejs
+      # - ./vol/www/server/nodejs:/www/server/nodejs
       - ./vol/www/server/panel/vhost:/www/server/panel/vhost
       - ./vol/www/server/panel/data:/www/server/panel/data
       - ./vol/www/wwwlogs:/www/wwwlogs
@@ -33,7 +33,7 @@ services:
       - ./docker-file/provision/wp-cli.phar:/usr/bin/wp
     env_file:
       - ./.env
-    command: sh /provision/entrypoint/cmd.sh
+    entrypoint: sh /provision/entrypoint/entrypoint.sh
     sysctls:
       net.ipv6.conf.all.disable_ipv6: 1
     ulimits:

@@ -27,19 +27,23 @@ mkdir:
 	- mkdir -p ./vol/www/server/data
 	- mkdir -p ./vol/www/server/panel/vhost
 	- mkdir -p ./vol/www/server/panel/data
+	- mkdir -p ./vol/www/server/nodejs
 	- mkdir -p ./vol/www/wwwlogs
 	- mkdir -p ./vol/www/backup
 	- mkdir -p ./vol/etc
+
 	- make --no-print-directory run
 	- docker cp ${STACK}:/www/wwwroot ./vol/www
 	- docker cp ${STACK}:/www/server/data ./vol/www/server
 	- sudo docker cp ${STACK}:/www/server/panel/vhost ./vol/www/server/panel
 	- sudo docker cp ${STACK}:/www/server/panel/data ./vol/www/server/panel
+	- sudo docker cp ${STACK}:/www/server/nodejs ./vol/www/server/nodejs
 	- docker cp ${STACK}:/www/wwwlogs ./vol/www
 	- docker cp ${STACK}:/www/backup ./vol/www
 	- docker cp ${STACK}:/etc/hosts ./vol/etc/hosts
 	- docker cp ${STACK}:/etc/resolv.conf ./vol/etc/resolv.conf
 	- cp -r ./docker-file/provision ./vol
+
 	- docker rm ${STACK} -f
 
 perm:
@@ -53,9 +57,46 @@ perm:
 rmdir:
 	- sudo rm -Rf ./vol/
 
-run:
-	- docker run --name ${STACK} -d -p ${AAP_PORT}:7800 -p ${FTP_PORT}:21 -p ${SSH_PORT}:22 \
-	-p ${HTTPS_PORT}:443 -p ${HTTP_PORT}:80 -p ${PMA_PORT}:888 ${REPO}
+mass_run:
+	- docker run --name ${STACK} -d -p 7801:7800 ${REPO}
+	- docker run --name ${STACK}-apache -d -p 7802:7800 ${REPO}-apache
+	- docker run --name ${STACK}-nginx -d -p 7803:7800 ${REPO}-nginx
+	- docker run --name ${STACK}-ols -d -p 7804:7800 ${REPO}-ols
+mass_update:
+	- docker exec ${STACK} bash -c "apt-get update -y"
+	- docker exec ${STACK}-apache bash -c "apt-get update -y"
+	- docker exec ${STACK}-nginx bash -c "apt-get update -y"
+	- docker exec ${STACK}-ols bash -c "apt-get update -y"
+
+	- docker exec ${STACK} bash -c "apt-get upgrade -y"
+	- docker exec ${STACK}-apache bash -c "apt-get upgrade -y"
+	- docker exec ${STACK}-nginx bash -c "apt-get upgrade -y"
+	- docker exec ${STACK}-ols bash -c "apt-get upgrade -y"
+
+	- docker exec ${STACK} bash -c "apt-get dist-upgrade -y"
+	- docker exec ${STACK}-apache bash -c "apt-get dist-upgrade -y"
+	- docker exec ${STACK}-nginx bash -c "apt-get dist-upgrade -y"
+	- docker exec ${STACK}-ols bash -c "apt-get dist-upgrade -y"
+
+	- docker exec ${STACK} bash -c "bt 16 && bt 1"
+	- docker exec ${STACK}-apache bash -c "bt 16 && bt 1"
+	- docker exec ${STACK}-nginx bash -c "bt 16 && bt 1"
+	- docker exec ${STACK}-ols bash -c "bt 16 && bt 1"
+mass_commit:
+	- docker commit ${STACK} ${REPO};
+	- docker commit ${STACK}-apache ${REPO}-apache;
+	- docker commit ${STACK}-nginx ${REPO}-nginx;
+	- docker commit ${STACK}-ols ${REPO}-ols;
+mass_push:
+	- docker push ${REPO};
+	- docker push ${REPO}-apache;
+	- docker push ${REPO}-nginx;
+	- docker push ${REPO}-ols;
+mass_rm:
+	- docker rm ${STACK} -f
+	- docker rm ${STACK}-apache -f
+	- docker rm ${STACK}-nginx -f
+	- docker rm ${STACK}-ols -f
 
 up:
 	- docker compose -p ${STACK} -f "./docker-compose.yml" up -d
