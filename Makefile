@@ -22,12 +22,16 @@ push:
 pull:
 	- docker pull ${REPO};
 
+run:
+	- docker run --name ${STACK} ${REPO}
+
 mkdir:
 	- mkdir -p ./vol/www/wwwroot
 	- mkdir -p ./vol/www/server/data
 	- mkdir -p ./vol/www/server/panel/vhost
 	- mkdir -p ./vol/www/server/panel/data
 	- mkdir -p ./vol/www/server/nodejs
+	- mkdir -p ./vol/www/server/pass
 	- mkdir -p ./vol/www/wwwlogs
 	- mkdir -p ./vol/www/backup
 	- mkdir -p ./vol/etc

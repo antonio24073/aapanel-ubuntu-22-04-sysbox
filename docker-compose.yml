@@ -24,6 +24,7 @@ services:
       # - ./vol/www/server/nodejs:/www/server/nodejs
       - ./vol/www/server/panel/vhost:/www/server/panel/vhost
       - ./vol/www/server/panel/data:/www/server/panel/data
+      - ./vol/www/server/pass:/www/server/pass
       - ./vol/www/wwwlogs:/www/wwwlogs
       - ./vol/www/backup:/www/backup
       # - /var/run/docker.sock:/var/run/docker.sock:ro
