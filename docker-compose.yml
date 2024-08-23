@@ -30,7 +30,7 @@ services:
       - ./vol/provision/entrypoint:/provision/entrypoint
       - ./vol/etc/resolv.conf:/etc/resolv.conf
       - ./vol/etc/hosts:/etc/hosts
-      - ./docker-file/provision/wp-cli.phar:/usr/bin/wp
+      # - ./docker-file/provision/wp-cli.phar:/usr/bin/wp
     env_file:
       - ./.env
     entrypoint: sh /provision/entrypoint/entrypoint.sh

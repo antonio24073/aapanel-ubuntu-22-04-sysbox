@@ -57,11 +57,21 @@ perm:
 rmdir:
 	- sudo rm -Rf ./vol/
 
-mass_run:
-	- docker run --name ${STACK} -d -p 7801:7800 ${REPO}
+mass_pull:
+	- docker pull ${REPO};
+	- docker pull ${REPO}-apache;
+	- docker pull ${REPO}-nginx;
+	- docker pull ${REPO}-ols;
+mass_up:
+	- docker run --name ${STACK}        -d -p 7801:7800 ${REPO}
 	- docker run --name ${STACK}-apache -d -p 7802:7800 ${REPO}-apache
-	- docker run --name ${STACK}-nginx -d -p 7803:7800 ${REPO}-nginx
-	- docker run --name ${STACK}-ols -d -p 7804:7800 ${REPO}-ols
+	- docker run --name ${STACK}-nginx  -d -p 7803:7800 ${REPO}-nginx
+	- docker run --name ${STACK}-ols    -d -p 7804:7800 ${REPO}-ols
+mass_run:
+	- docker run --name ${STACK}        -d ${REPO}
+	- docker run --name ${STACK}-apache -d ${REPO}-apache
+	- docker run --name ${STACK}-nginx  -d ${REPO}-nginx
+	- docker run --name ${STACK}-ols    -d ${REPO}-ols
 mass_update:
 	- docker exec ${STACK} bash -c "apt-get update -y"
 	- docker exec ${STACK}-apache bash -c "apt-get update -y"
