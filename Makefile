@@ -20,10 +20,10 @@ push:
 	- docker push ${REPO}
 
 pull:
-	- docker pull ${REPO};
+	- docker pull ${REPO}
 
 run:
-	- docker run --name ${STACK} ${REPO}
+	- docker run --name ${STACK} -d -p 7800:7800 ${REPO}
 
 mkdir:
 	- mkdir -p ./vol/www/wwwroot
@@ -66,51 +66,62 @@ mass_pull:
 	- docker pull ${REPO}-apache;
 	- docker pull ${REPO}-nginx;
 	- docker pull ${REPO}-ols;
+	- docker pull ${REPO}-mail;
 mass_up:
 	- docker run --name ${STACK}        -d -p 7801:7800 ${REPO}
 	- docker run --name ${STACK}-apache -d -p 7802:7800 ${REPO}-apache
 	- docker run --name ${STACK}-nginx  -d -p 7803:7800 ${REPO}-nginx
 	- docker run --name ${STACK}-ols    -d -p 7804:7800 ${REPO}-ols
+	- docker run --name ${STACK}-mail    -d -p 7804:7800 ${REPO}-mail
 mass_run:
 	- docker run --name ${STACK}        -d ${REPO}
 	- docker run --name ${STACK}-apache -d ${REPO}-apache
 	- docker run --name ${STACK}-nginx  -d ${REPO}-nginx
 	- docker run --name ${STACK}-ols    -d ${REPO}-ols
+	- docker run --name ${STACK}-mail    -d ${REPO}-mail
 mass_update:
 	- docker exec ${STACK} bash -c "apt-get update -y"
 	- docker exec ${STACK}-apache bash -c "apt-get update -y"
 	- docker exec ${STACK}-nginx bash -c "apt-get update -y"
 	- docker exec ${STACK}-ols bash -c "apt-get update -y"
+	- docker exec ${STACK}-mail bash -c "apt-get update -y"
 
 	- docker exec ${STACK} bash -c "apt-get upgrade -y"
 	- docker exec ${STACK}-apache bash -c "apt-get upgrade -y"
 	- docker exec ${STACK}-nginx bash -c "apt-get upgrade -y"
 	- docker exec ${STACK}-ols bash -c "apt-get upgrade -y"
+	- docker exec ${STACK}-mail bash -c "apt-get upgrade -y"
+
 
 	- docker exec ${STACK} bash -c "apt-get dist-upgrade -y"
 	- docker exec ${STACK}-apache bash -c "apt-get dist-upgrade -y"
 	- docker exec ${STACK}-nginx bash -c "apt-get dist-upgrade -y"
 	- docker exec ${STACK}-ols bash -c "apt-get dist-upgrade -y"
+	- docker exec ${STACK}-mail bash -c "apt-get dist-upgrade -y"
 
 	- docker exec ${STACK} bash -c "bt 16 && bt 1"
 	- docker exec ${STACK}-apache bash -c "bt 16 && bt 1"
 	- docker exec ${STACK}-nginx bash -c "bt 16 && bt 1"
 	- docker exec ${STACK}-ols bash -c "bt 16 && bt 1"
+	- docker exec ${STACK}-mail bash -c "bt 16 && bt 1"
 mass_commit:
 	- docker commit ${STACK} ${REPO};
 	- docker commit ${STACK}-apache ${REPO}-apache;
 	- docker commit ${STACK}-nginx ${REPO}-nginx;
 	- docker commit ${STACK}-ols ${REPO}-ols;
+	- docker commit ${STACK}-mail ${REPO}-mail;
 mass_rm:
 	- docker rm ${STACK} -f
 	- docker rm ${STACK}-apache -f
 	- docker rm ${STACK}-nginx -f
 	- docker rm ${STACK}-ols -f
+	- docker rm ${STACK}-mail -f
 mass_push:
 	- docker push ${REPO};
 	- docker push ${REPO}-apache;
 	- docker push ${REPO}-nginx;
 	- docker push ${REPO}-ols;
+	- docker push ${REPO}-mail;
 
 mass_no_parallel_update_cycle: # to save resources
 	- docker run --name ${STACK}        -d ${REPO}
@@ -145,6 +156,14 @@ mass_no_parallel_update_cycle: # to save resources
 	- docker commit 	${STACK}-ols ${REPO};
 	- docker rm 		${STACK}-ols -f
 	- docker push ${REPO};
+	- docker run --name ${STACK}-mail        -d ${REPO}
+	- docker exec 		${STACK}-mail bash -c "apt-get update -y"
+	- docker exec 		${STACK}-mail bash -c "apt-get upgrade -y"
+	- docker exec 		${STACK}-mail bash -c "apt-get dist-upgrade -y"
+	- docker exec 		${STACK}-mail bash -c "bt 16 && bt 1"
+	- docker commit 	${STACK}-mail ${REPO};
+	- docker rm 		${STACK}-mail -f
+	- docker push ${REPO};
 
 up:
 	- docker compose -p ${STACK} -f "./docker-compose.yml" up -d
@@ -152,6 +171,7 @@ up:
 
 rm:
 	- docker rm ${STACK} -f
+	- docker rm ${STACK}_wt -f
 
 bt:
 	- docker exec -it ${STACK} bt;
