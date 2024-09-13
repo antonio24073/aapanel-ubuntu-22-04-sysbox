@@ -45,6 +45,7 @@ mkdir:
 	- sudo docker cp ${STACK}:/www/server/nodejs ./vol/www/server/nodejs
 	- docker cp ${STACK}:/www/wwwlogs ./vol/www
 	- docker cp ${STACK}:/www/backup ./vol/www
+	- docker cp ${STACK}:/www/vmail ./vol/www
 	- docker cp ${STACK}:/etc/hosts ./vol/etc/hosts
 	- docker cp ${STACK}:/etc/resolv.conf ./vol/etc/resolv.conf
 	- cp -r ./docker-file/provision ./vol
