@@ -34,6 +34,7 @@ mkdir:
 	- mkdir -p ./vol/www/server/pass
 	- mkdir -p ./vol/www/wwwlogs
 	- mkdir -p ./vol/www/backup
+	- mkdir -p ./vol/www/vmail
 	- mkdir -p ./vol/etc
 
 	- make --no-print-directory run

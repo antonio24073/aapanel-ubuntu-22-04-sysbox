@@ -32,6 +32,7 @@ services:
       - ./vol/www/server/pass:/www/server/pass
       - ./vol/www/wwwlogs:/www/wwwlogs
       - ./vol/www/backup:/www/backup
+      - ./vol/www/vmail:/www/vmail
       - ./vol/provision/entrypoint:/provision/entrypoint
       - ./vol/etc/resolv.conf:/etc/resolv.conf
       - ./vol/etc/hosts:/etc/hosts
