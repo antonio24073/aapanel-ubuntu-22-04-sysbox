@@ -101,16 +101,50 @@ mass_commit:
 	- docker commit ${STACK}-apache ${REPO}-apache;
 	- docker commit ${STACK}-nginx ${REPO}-nginx;
 	- docker commit ${STACK}-ols ${REPO}-ols;
-mass_push:
-	- docker push ${REPO};
-	- docker push ${REPO}-apache;
-	- docker push ${REPO}-nginx;
-	- docker push ${REPO}-ols;
 mass_rm:
 	- docker rm ${STACK} -f
 	- docker rm ${STACK}-apache -f
 	- docker rm ${STACK}-nginx -f
 	- docker rm ${STACK}-ols -f
+mass_push:
+	- docker push ${REPO};
+	- docker push ${REPO}-apache;
+	- docker push ${REPO}-nginx;
+	- docker push ${REPO}-ols;
+
+mass_no_parallel_update_cycle: # to save resources
+	- docker run --name ${STACK}        -d ${REPO}
+	- docker exec 		${STACK} bash -c "apt-get update -y"
+	- docker exec 		${STACK} bash -c "apt-get upgrade -y"
+	- docker exec 		${STACK} bash -c "apt-get dist-upgrade -y"
+	- docker exec 		${STACK} bash -c "bt 16 && bt 1"
+	- docker commit 	${STACK} ${REPO};
+	- docker rm 		${STACK} -f
+	- docker push ${REPO};
+	- docker run --name ${STACK}-apache        -d ${REPO}
+	- docker exec 		${STACK}-apache bash -c "apt-get update -y"
+	- docker exec 		${STACK}-apache bash -c "apt-get upgrade -y"
+	- docker exec 		${STACK}-apache bash -c "apt-get dist-upgrade -y"
+	- docker exec 		${STACK}-apache bash -c "bt 16 && bt 1"
+	- docker commit 	${STACK}-apache ${REPO};
+	- docker rm 		${STACK}-apache -f
+	- docker push ${REPO};
+	- docker run --name ${STACK}-nginx        -d ${REPO}
+	- docker exec 		${STACK}-nginx bash -c "apt-get update -y"
+	- docker exec 		${STACK}-nginx bash -c "apt-get upgrade -y"
+	- docker exec 		${STACK}-nginx bash -c "apt-get dist-upgrade -y"
+	- docker exec 		${STACK}-nginx bash -c "bt 16 && bt 1"
+	- docker commit 	${STACK}-nginx ${REPO};
+	- docker rm 		${STACK}-nginx -f
+	- docker push ${REPO};
+	- docker run --name ${STACK}-ols        -d ${REPO}
+	- docker exec 		${STACK}-ols bash -c "apt-get update -y"
+	- docker exec 		${STACK}-ols bash -c "apt-get upgrade -y"
+	- docker exec 		${STACK}-ols bash -c "apt-get dist-upgrade -y"
+	- docker exec 		${STACK}-ols bash -c "bt 16 && bt 1"
+	- docker commit 	${STACK}-ols ${REPO};
+	- docker rm 		${STACK}-ols -f
+	- docker push ${REPO};
 
 up:
 	- docker compose -p ${STACK} -f "./docker-compose.yml" up -d

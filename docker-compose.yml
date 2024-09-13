@@ -1,6 +1,8 @@
 services:
   aap:
     runtime: sysbox-runc
+    labels:
+      traefik.enable: false
     user: root
     image: antonio24073/aapanel:ubuntu-22-04-sysbox
     container_name: aapanel
