@@ -29,6 +29,8 @@ fi
 
 sh /provision/entrypoint/restart.sh
 
+
+
 chmod +x /sbin/init
 
 exec /sbin/init --log-level=err

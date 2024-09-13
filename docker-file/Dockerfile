@@ -58,6 +58,10 @@ COPY ./provision/docker-compose /bin/docker-compose
 RUN ["chmod", "+x", "/provision/docker-compose"]
 RUN ["chmod", "+x", "/bin/docker-compose"]
 
+COPY ./aapanel-start.service /etc/systemd/system/aapanel-start.service
+
+RUN systemctl enable aapanel-start
+
 ENTRYPOINT ["/bin/sh", "/provision/entrypoint/entrypoint.sh"]
 
 EXPOSE 7800 21 22 443 80 888

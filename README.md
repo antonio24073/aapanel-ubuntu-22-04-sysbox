@@ -8,15 +8,15 @@ use 22.04, it is compatible with mail server, openlitespeed.
 
 # Requirements
 
-- install docker sysbox: https://github.com/nestybox/sysbox
+## Install sysbox
 
-Sysbox is needed to nested docker containers.
+Install docker sysbox or remove it from `Dockerfile` and `docker-compose.yml` =>> [help](https://github.com/antonio24073/aapanel-ubuntu-22-04-sysbox/tree/main/docs)
 
-## config
+## Config
 
 Rename `.env.example` to `.env` and change the variables
 
-## run
+## Run
 
 ```
 make build
@@ -27,13 +27,13 @@ make bt
 14
 ```
 
-## record changes to aapanel in the docker image
+## Record changes to aapanel in the docker image
 
 ```
 make commit
 ```
 
-## stop
+## Stop
 
 ```
 make rm

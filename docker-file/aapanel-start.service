@@ -1,0 +1,13 @@
+[Unit]
+Description=Start Aapanel when container starts or after docker
+After=docker.service
+Requires=docker.service
+
+[Service]
+ExecStart=
+ExecStart=bt 1
+RemainAfterExit=true
+Type=oneshot
+
+[Install]
+WantedBy=default.target
