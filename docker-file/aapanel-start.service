@@ -5,7 +5,7 @@ Requires=docker.service
 
 [Service]
 ExecStart=
-ExecStart=bt 1
+ExecStart=sh /provision/entrypoint/restart.sh
 RemainAfterExit=true
 Type=oneshot
 

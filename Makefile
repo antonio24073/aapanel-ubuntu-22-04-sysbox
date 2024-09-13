@@ -72,7 +72,7 @@ mass_up:
 	- docker run --name ${STACK}-apache -d -p 7802:7800 ${REPO}-apache
 	- docker run --name ${STACK}-nginx  -d -p 7803:7800 ${REPO}-nginx
 	- docker run --name ${STACK}-ols    -d -p 7804:7800 ${REPO}-ols
-	- docker run --name ${STACK}-mail    -d -p 7804:7800 ${REPO}-mail
+	- docker run --name ${STACK}-mail    -d -p 7805:7800 ${REPO}-mail
 mass_run:
 	- docker run --name ${STACK}        -d ${REPO}
 	- docker run --name ${STACK}-apache -d ${REPO}-apache
@@ -116,6 +116,7 @@ mass_rm:
 	- docker rm ${STACK}-nginx -f
 	- docker rm ${STACK}-ols -f
 	- docker rm ${STACK}-mail -f
+	- docker rm ${STACK}_wt -f
 mass_push:
 	- docker push ${REPO};
 	- docker push ${REPO}-apache;
