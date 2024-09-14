@@ -4,7 +4,15 @@ Aapanel docker compose file to customize
 
 Update: Ubuntu 22.04
 
-use 22.04, it is compatible with mail server, openlitespeed.
+5 tags:
+
+- clean: antonio24073/aapanel-ubuntu-22-04-sysbox
+- apache: antonio24073/aapanel-ubuntu-22-04-sysbox-apache
+- nginx: antonio24073/aapanel-ubuntu-22-04-sysbox-nginx
+- open litespeed: antonio24073/aapanel-ubuntu-22-04-sysbox-ols
+- mail: antonio24073/aapanel-ubuntu-22-04-sysbox-mail
+
+The mail tag needs nginx and mysql 5.7. So it's a nginx modified.
 
 # Requirements
 
