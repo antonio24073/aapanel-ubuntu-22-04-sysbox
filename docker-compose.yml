@@ -4,7 +4,7 @@ services:
     labels:
       traefik.enable: false
     user: root
-    image: antonio24073/aapanel:ubuntu-22-04-sysbox
+    image: antonio24073/aapanel:ubuntu-22-04-sysbox-apache
     container_name: aapanel
     ports: 
       - ${AAP_PORT}:7800
@@ -36,8 +36,9 @@ services:
       - ./vol/provision/entrypoint:/provision/entrypoint
       - ./vol/etc/resolv.conf:/etc/resolv.conf
       - ./vol/etc/hosts:/etc/hosts
-      # - ./vol/www/server/python_manager/versions:/www/server/python_manager/versions
-      # - ./vol/www/server/nodejs:/www/server/nodejs
+      - ./vol/www/server/python_manager/versions:/www/server/python_manager/versions
+      - ./vol/www/server/pgsql:/www/server/pgsql
+      - ./vol/www/server/nodejs:/www/server/nodejs
 
       # if you do not use docker sysbox enable this:
       # - /var/run/docker.sock:/var/run/docker.sock:ro
