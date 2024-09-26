@@ -36,6 +36,7 @@ services:
       - ./vol/provision/entrypoint:/provision/entrypoint
       - ./vol/etc/resolv.conf:/etc/resolv.conf
       - ./vol/etc/hosts:/etc/hosts
+      # - ./vol/www/server/python_manager/versions:/www/server/python_manager/versions
       # - ./vol/www/server/nodejs:/www/server/nodejs
 
       # if you do not use docker sysbox enable this:

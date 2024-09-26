@@ -23,7 +23,7 @@ pull:
 	- docker pull ${REPO}
 
 run:
-	- docker run --name ${STACK} -d -p 7800:7800 ${REPO}
+	- docker run --name ${STACK} -d -p 7800:7800 ${REPO}-apache
 
 mkdir:
 	- mkdir -p ./vol/www/wwwroot
@@ -31,6 +31,8 @@ mkdir:
 	- mkdir -p ./vol/www/server/panel/vhost
 	- mkdir -p ./vol/www/server/panel/data
 	- mkdir -p ./vol/www/server/nodejs
+	- mkdir -p ./vol/www/server/python_manager/versions
+	- mkdir -p ./vol/www/server/pgsql
 	- mkdir -p ./vol/www/server/pass
 	- mkdir -p ./vol/www/wwwlogs
 	- mkdir -p ./vol/www/backup
@@ -40,9 +42,11 @@ mkdir:
 	- make --no-print-directory run
 	- docker cp ${STACK}:/www/wwwroot ./vol/www
 	- docker cp ${STACK}:/www/server/data ./vol/www/server
-	- sudo docker cp ${STACK}:/www/server/panel/vhost ./vol/www/server/panel
-	- sudo docker cp ${STACK}:/www/server/panel/data ./vol/www/server/panel
-	- sudo docker cp ${STACK}:/www/server/nodejs ./vol/www/server/nodejs
+	- docker cp ${STACK}:/www/server/panel/vhost ./vol/www/server/panel
+	- docker cp ${STACK}:/www/server/panel/data ./vol/www/server/panel
+	- docker cp ${STACK}:/www/server/nodejs ./vol/www/server/nodejs
+	- docker cp ${STACK}:/www/server/python_manager/versions ./vol/www/server/python_manager/versions
+	- docker cp ${STACK}:/www/server/pgsql ./vol/www/server/pgsql
 	- docker cp ${STACK}:/www/wwwlogs ./vol/www
 	- docker cp ${STACK}:/www/backup ./vol/www
 	- docker cp ${STACK}:/www/vmail ./vol/www
@@ -74,13 +78,13 @@ mass_up:
 	- docker run --name ${STACK}-apache -d -p 7802:7800 ${REPO}-apache
 	- docker run --name ${STACK}-nginx  -d -p 7803:7800 ${REPO}-nginx
 	- docker run --name ${STACK}-ols    -d -p 7804:7800 ${REPO}-ols
-	- docker run --name ${STACK}-mail    -d -p 7805:7800 ${REPO}-mail
+	- docker run --name ${STACK}-mail   -d -p 7805:7800 ${REPO}-mail
 mass_run:
 	- docker run --name ${STACK}        -d ${REPO}
 	- docker run --name ${STACK}-apache -d ${REPO}-apache
 	- docker run --name ${STACK}-nginx  -d ${REPO}-nginx
 	- docker run --name ${STACK}-ols    -d ${REPO}-ols
-	- docker run --name ${STACK}-mail    -d ${REPO}-mail
+	- docker run --name ${STACK}-mail   -d ${REPO}-mail
 mass_update:
 	- docker exec ${STACK} bash -c "apt-get update -y"
 	- docker exec ${STACK}-apache bash -c "apt-get update -y"
