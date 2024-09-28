@@ -74,17 +74,17 @@ mass_pull:
 	- docker pull ${REPO}-ols;
 	- docker pull ${REPO}-mail;
 mass_up:
-	- docker run --name ${STACK}        -d -p 7801:7800 ${REPO}
-	- docker run --name ${STACK}-apache -d -p 7802:7800 ${REPO}-apache
-	- docker run --name ${STACK}-nginx  -d -p 7803:7800 ${REPO}-nginx
-	- docker run --name ${STACK}-ols    -d -p 7804:7800 ${REPO}-ols
-	- docker run --name ${STACK}-mail   -d -p 7805:7800 ${REPO}-mail
-mass_run:
-	- docker run --name ${STACK}        -d ${REPO}
-	- docker run --name ${STACK}-apache -d ${REPO}-apache
-	- docker run --name ${STACK}-nginx  -d ${REPO}-nginx
-	- docker run --name ${STACK}-ols    -d ${REPO}-ols
-	- docker run --name ${STACK}-mail   -d ${REPO}-mail
+	- docker run --name ${STACK}        --env-file=./.env -d -p 7801:7800 ${REPO}
+	- docker run --name ${STACK}-apache --env-file=./.env -d -p 7802:7800 ${REPO}-apache
+	- docker run --name ${STACK}-nginx  --env-file=./.env -d -p 7803:7800 ${REPO}-nginx
+	- docker run --name ${STACK}-ols    --env-file=./.env -d -p 7804:7800 ${REPO}-ols
+	- docker run --name ${STACK}-mail   --env-file=./.env -d -p 7805:7800 ${REPO}-mail
+mass_run: 
+	- docker run --name ${STACK}        --env-file=./.env -d ${REPO}
+	- docker run --name ${STACK}-apache --env-file=./.env -d ${REPO}-apache
+	- docker run --name ${STACK}-nginx  --env-file=./.env -d ${REPO}-nginx
+	- docker run --name ${STACK}-ols    --env-file=./.env -d ${REPO}-ols
+	- docker run --name ${STACK}-mail   --env-file=./.env -d ${REPO}-mail
 mass_update:
 	- docker exec ${STACK} bash -c "apt-get update -y"
 	- docker exec ${STACK}-apache bash -c "apt-get update -y"

@@ -25,6 +25,8 @@ services:
       # - 143:143
 
     volumes:
+      - ./vol/root:/root
+      - ./vol/home/${LINUX_USER_NAME}:/home/${LINUX_USER_NAME}
       - ./vol/www/wwwroot:/www/wwwroot
       - ./vol/www/server/data:/www/server/data
       - ./vol/www/server/panel/vhost:/www/server/panel/vhost

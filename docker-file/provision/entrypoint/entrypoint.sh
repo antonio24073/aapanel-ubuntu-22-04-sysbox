@@ -6,6 +6,8 @@
 if [ ! -z "$LINUX_USER_NAME" ]; then
     [[ ! -z "$LINUX_USER_PASS" ]] && printf "$LINUX_USER_PASS\n$LINUX_USER_PASS\n\n\n\n\n\ny\n" | adduser $LINUX_USER_NAME
 
+    [[ ! -z "$POSTGRES_PASS" ]] && printf "$POSTGRES_PASS\npostgres\n\n\n\n\n\ny\n" | adduser postgres
+
     if [ "$(grep -Ei 'debian|ubuntu|mint' /etc/*release)" ]; then
         usermod -aG sudo $LINUX_USER_NAME
     fi
@@ -28,8 +30,7 @@ fi
 [[ ! -z "$REDIS_PASS" ]] && sudo sed -z -i "s/# requirepass foobared/requirepass $REDIS_PASS\n/g" /www/server/redis/redis.conf
 
 sh /provision/entrypoint/restart.sh
-
-
+sh /provision/entrypoint/env.sh
 
 chmod +x /sbin/init
 

@@ -2,6 +2,8 @@
 
 #ini restart aapanel
 bt 1
+
+sh /www/server/panel/plugin/pgsql_manager/pgsql.sh start
 chown mysql:mysql /www/server/data
 /www/server/mysql/scripts/mysql_install_db --user=mysql
 /etc/init.d/mysqld start
