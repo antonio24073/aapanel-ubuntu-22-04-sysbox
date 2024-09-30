@@ -4,7 +4,7 @@ services:
     labels:
       traefik.enable: false
     user: root
-    image: antonio24073/aapanel:ubuntu-22-04-sysbox-apache
+    image: antonio24073/aapanel:ubuntu-22-04-sysbox-mail
     container_name: aapanel
     ports: 
       - ${AAP_PORT}:7800
@@ -39,6 +39,8 @@ services:
       - ./vol/etc/resolv.conf:/etc/resolv.conf
       - ./vol/etc/hosts:/etc/hosts
       - ./vol/www/server/python_manager/versions:/www/server/python_manager/versions
+      - ./vol/www/server/python_manager/panel/plugin/pythonmamager/config.json:/www/server/panel/plugin/pythonmamager/config.json
+      - ./vol/www/server/panel/plugin/pgsql_manager_dbuser_info.json:/www/server/panel/plugin/pgsql_manager_dbuser_info.json
       - ./vol/www/server/pgsql:/www/server/pgsql
       - ./vol/www/server/nodejs:/www/server/nodejs
 

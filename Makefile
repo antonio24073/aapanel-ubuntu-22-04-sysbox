@@ -32,6 +32,12 @@ mkdir:
 	- mkdir -p ./vol/www/server/panel/data
 	- mkdir -p ./vol/www/server/nodejs
 	- mkdir -p ./vol/www/server/python_manager/versions
+
+	- mkdir -p ./vol/www/server/panel/plugin/pythonmamager
+	- mkdir -p ./vol/www/server/python_manager/panel/plugin/pythonmamager/
+	- touch ./vol/www/server/python_manager/panel/plugin/pythonmamager/config.json
+	- touch ./vol/www/server/python_manager/panel/plugin/pgsql_manager_dbuser_info.json
+
 	- mkdir -p ./vol/www/server/pgsql
 	- mkdir -p ./vol/www/server/pass
 	- mkdir -p ./vol/www/wwwlogs
@@ -42,13 +48,15 @@ mkdir:
 	- make --no-print-directory run
 	- docker cp ${STACK}:/www/wwwroot ./vol/www
 	- docker cp ${STACK}:/www/server/data ./vol/www/server
-	- docker cp ${STACK}:/www/server/panel/vhost ./vol/www/server/panel
-	- docker cp ${STACK}:/www/server/panel/data ./vol/www/server/panel
-	- docker cp ${STACK}:/www/server/nodejs ./vol/www/server/nodejs
-	- docker cp ${STACK}:/www/server/python_manager/versions ./vol/www/server/python_manager/versions
+	- sudo docker cp ${STACK}:/www/server/panel/vhost ./vol/www/server/panel
+	- sudo docker cp ${STACK}:/www/server/panel/data ./vol/www/server/panel
+	- sudo docker cp ${STACK}:/www/server/nodejs ./vol/www/server/nodejs
+	- sudo docker cp ${STACK}:/www/server/python_manager/versions ./vol/www/server/python_manager
+	- sudo docker cp ${STACK}:/www/server/python_manager/panel/plugin/pythonmamager/config.json ./vol/www/server/panel/plugin/pythonmamager/config.json
+	- sudo docker cp ${STACK}:/www/server/python_manager/panel/plugin/pgsql_manager_dbuser_info.json ./vol/www/server/panel/plugin/pgsql_manager_dbuser_info.json
 	- docker cp ${STACK}:/www/server/pgsql ./vol/www/server/pgsql
 	- docker cp ${STACK}:/www/wwwlogs ./vol/www
-	- docker cp ${STACK}:/www/backup ./vol/www
+	- sudo docker cp ${STACK}:/www/backup ./vol/www
 	- docker cp ${STACK}:/www/vmail ./vol/www
 	- docker cp ${STACK}:/etc/hosts ./vol/etc/hosts
 	- docker cp ${STACK}:/etc/resolv.conf ./vol/etc/resolv.conf
@@ -57,12 +65,19 @@ mkdir:
 	- docker rm ${STACK} -f
 
 perm:
-	- docker exec -u 0 -it ${STACK} chown -R mysql:mysql /www/server/data
-	- docker exec -u 0 -it ${STACK} chown root:root -R /www/server/panel/vhost
-	- docker exec -u 0 -it ${STACK} chown root:root -R /www/server/panel/data
-	- docker exec -u 0 -it ${STACK} chown ${AAP_USER}:www /www/wwwroot
-	- docker exec -u 0 -it ${STACK} find /www/wwwroot -type d -exec chmod 775 {} \; 
-	- docker exec -u 0 -it ${STACK} find /www/wwwroot -type f -exec chmod 664 {} \; 
+	- docker exec -u 0 ${STACK} chown -R mysql:mysql /www/server/data; 
+	- docker exec -u 0 ${STACK} chown root:root -R /www/server/panel/vhost; 
+	- docker exec -u 0 ${STACK} chown root:root -R /www/server/panel/data; 
+	- docker exec -u 0 ${STACK} chown ${AAP_USER}:www /www/wwwroot; 
+	- docker exec -u 0 ${STACK} find /www/wwwroot -type d -exec chmod 775 {} \; ; 
+	- docker exec -u 0 ${STACK} find /www/wwwroot -type f -exec chmod 664 {} \; ; 
+	- docker exec -u 0 ${STACK} chown root:root /www/wwwroot/*/.user.ini; 
+	- docker exec -u 0 ${STACK} chmod 440 /www/wwwroot/*/.user.ini; 
+	- docker exec -u 0 ${STACK} chown www:www /www/wwwlogs; 
+	- docker exec -u 0 ${STACK} chown root:root /www/backup; 
+	- docker exec -u 0 ${STACK} chown vmail:mail /www/vmail; 
+	- docker exec -u 0 ${STACK} chown ${LINUX_USER_NAME}:${LINUX_USER_NAME} /home/${LINUX_USER_NAME}; 
+	- docker exec -u 0 ${STACK} chown root:root /root; 
 
 rmdir:
 	- sudo rm -Rf ./vol/
