@@ -29,8 +29,8 @@ Rename `.env.example` to `.env` and change the variables
 ```
 make build
 make mkdir
-make perm
 make up
+make perm
 make bt
 14
 ```
