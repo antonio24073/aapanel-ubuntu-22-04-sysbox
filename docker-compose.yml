@@ -4,7 +4,7 @@ services:
     labels:
       traefik.enable: false
     user: root
-    image: antonio24073/aapanel:ubuntu-22-04-sysbox-mail
+    image: antonio24073/aapanel:ubuntu-22-04-sysbox-apache
     container_name: aapanel
     ports: 
       - ${AAP_PORT}:7800

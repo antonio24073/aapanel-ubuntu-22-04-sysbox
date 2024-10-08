@@ -64,6 +64,20 @@ mkdir:
 
 	- docker rm ${STACK} -f
 
+up:
+	- docker compose -p ${STACK} -f "./docker-compose.yml" up -d
+	
+
+rm:
+	- docker rm ${STACK} -f
+	- docker rm ${STACK}_wt -f
+
+bt:
+	- docker exec -it ${STACK} bt;
+
+bash:
+	- docker exec -it ${STACK} bash;
+	
 perm:
 	- docker exec -u 0 ${STACK} chown -R mysql:mysql /www/server/data; 
 	- docker exec -u 0 ${STACK} chown root:root -R /www/server/panel/vhost; 
@@ -186,17 +200,3 @@ mass_no_parallel_update_cycle: # to save resources
 	- docker commit 	${STACK}-mail ${REPO};
 	- docker rm 		${STACK}-mail -f
 	- docker push ${REPO};
-
-up:
-	- docker compose -p ${STACK} -f "./docker-compose.yml" up -d
-	
-
-rm:
-	- docker rm ${STACK} -f
-	- docker rm ${STACK}_wt -f
-
-bt:
-	- docker exec -it ${STACK} bt;
-
-bash:
-	- docker exec -it ${STACK} bash;
