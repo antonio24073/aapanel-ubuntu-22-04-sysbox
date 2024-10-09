@@ -7,6 +7,7 @@ sh /www/server/panel/plugin/pgsql_manager/pgsql.sh start
 chown mysql:mysql /www/server/data
 /www/server/mysql/scripts/mysql_install_db --user=mysql
 /etc/init.d/mysqld start
+systemctl restart mysql
 /etc/init.d/php-fpm-74 start
 /etc/init.d/php-fpm-80 start
 /etc/init.d/php-fpm-81 start

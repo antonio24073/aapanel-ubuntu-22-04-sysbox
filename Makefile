@@ -30,6 +30,7 @@ mkdir:
 	- mkdir -p ./vol/www/server/data
 	- mkdir -p ./vol/www/server/panel/vhost
 	- mkdir -p ./vol/www/server/panel/data
+	- mkdir -p ./vol/www/server/panel/ssl
 	- mkdir -p ./vol/www/server/nodejs
 	- mkdir -p ./vol/www/server/python_manager/versions
 
@@ -50,6 +51,7 @@ mkdir:
 	- docker cp ${STACK}:/www/server/data ./vol/www/server
 	- sudo docker cp ${STACK}:/www/server/panel/vhost ./vol/www/server/panel
 	- sudo docker cp ${STACK}:/www/server/panel/data ./vol/www/server/panel
+	- sudo docker cp ${STACK}:/www/server/panel/ssl ./vol/www/server/ssl
 	- sudo docker cp ${STACK}:/www/server/nodejs ./vol/www/server/nodejs
 	- sudo docker cp ${STACK}:/www/server/python_manager/versions ./vol/www/server/python_manager
 	- sudo docker cp ${STACK}:/www/server/python_manager/panel/plugin/pythonmamager/config.json ./vol/www/server/panel/plugin/pythonmamager/config.json
