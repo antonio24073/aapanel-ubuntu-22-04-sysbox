@@ -23,7 +23,7 @@ pull:
 	- docker pull ${REPO}
 
 run:
-	- docker run --name ${STACK} -d -p 7800:7800 ${REPO}-apache
+	- docker run -d --name ${STACK} ${REPO}
 
 mkdir:
 	- mkdir -p ./vol/www/wwwroot
