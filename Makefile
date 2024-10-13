@@ -31,6 +31,13 @@ mkdir:
 	- mkdir -p ./vol/www/server/panel/vhost
 	- mkdir -p ./vol/www/server/panel/data
 	- mkdir -p ./vol/www/server/panel/ssl
+
+	# fix apache ssl  restart
+	- mkdir -p ./vol/www/server/apache/conf/extra
+	- touch ./vol/www/server/apache/conf/extra/httpd-ssl.conf
+	- touch ./vol/www/server/apache/conf/httpd.conf
+
+
 	- mkdir -p ./vol/www/server/nodejs
 	- mkdir -p ./vol/www/server/python_manager/versions
 
