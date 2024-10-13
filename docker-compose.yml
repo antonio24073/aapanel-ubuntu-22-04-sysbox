@@ -32,6 +32,10 @@ services:
       - ./vol/www/server/panel/vhost:/www/server/panel/vhost
       - ./vol/www/server/panel/data:/www/server/panel/data
       - ./vol/www/server/panel/ssl:/www/server/panel/ssl
+
+      # fix ssl apache restart
+      - ./vol/www/server/apache/conf/extra/httpd-ssl.conf:/www/server/apache/conf/extra/httpd-ssl.conf
+      - ./vol/www/server/apache/conf/httpd.conf:/www/server/apache/conf/httpd.conf
       
       - ./vol/www/server/pass:/www/server/pass
       - ./vol/www/wwwlogs:/www/wwwlogs
