@@ -106,23 +106,23 @@ rmdir:
 	- sudo rm -Rf ./vol/
 
 mass_pull:
-	- docker pull ${REPO};
-	- docker pull ${REPO}-apache;
-	- docker pull ${REPO}-nginx;
-	- docker pull ${REPO}-ols;
-	- docker pull ${REPO}-mail;
+	- docker pull ${MASS_REPO};
+	- docker pull ${MASS_REPO}-apache;
+	- docker pull ${MASS_REPO}-nginx;
+	- docker pull ${MASS_REPO}-ols;
+	- docker pull ${MASS_REPO}-mail;
 mass_up:
-	- docker run --name ${STACK}        --env-file=./.env -d -p 7801:7800 ${REPO}
-	- docker run --name ${STACK}-apache --env-file=./.env -d -p 7802:7800 ${REPO}-apache
-	- docker run --name ${STACK}-nginx  --env-file=./.env -d -p 7803:7800 ${REPO}-nginx
-	- docker run --name ${STACK}-ols    --env-file=./.env -d -p 7804:7800 ${REPO}-ols
-	- docker run --name ${STACK}-mail   --env-file=./.env -d -p 7805:7800 ${REPO}-mail
+	- docker run --name ${STACK}        --env-file=./.env -d -p 7801:7800 ${MASS_REPO}
+	- docker run --name ${STACK}-apache --env-file=./.env -d -p 7802:7800 ${MASS_REPO}-apache
+	- docker run --name ${STACK}-nginx  --env-file=./.env -d -p 7803:7800 ${MASS_REPO}-nginx
+	- docker run --name ${STACK}-ols    --env-file=./.env -d -p 7804:7800 ${MASS_REPO}-ols
+	- docker run --name ${STACK}-mail   --env-file=./.env -d -p 7805:7800 ${MASS_REPO}-mail
 mass_run: 
-	- docker run --name ${STACK}        --env-file=./.env -d ${REPO}
-	- docker run --name ${STACK}-apache --env-file=./.env -d ${REPO}-apache
-	- docker run --name ${STACK}-nginx  --env-file=./.env -d ${REPO}-nginx
-	- docker run --name ${STACK}-ols    --env-file=./.env -d ${REPO}-ols
-	- docker run --name ${STACK}-mail   --env-file=./.env -d ${REPO}-mail
+	- docker run --name ${STACK}        --env-file=./.env -d ${MASS_REPO}
+	- docker run --name ${STACK}-apache --env-file=./.env -d ${MASS_REPO}-apache
+	- docker run --name ${STACK}-nginx  --env-file=./.env -d ${MASS_REPO}-nginx
+	- docker run --name ${STACK}-ols    --env-file=./.env -d ${MASS_REPO}-ols
+	- docker run --name ${STACK}-mail   --env-file=./.env -d ${MASS_REPO}-mail
 mass_update:
 	- docker exec ${STACK} bash -c "apt-get update -y"
 	- docker exec ${STACK}-apache bash -c "apt-get update -y"
@@ -149,11 +149,11 @@ mass_update:
 	- docker exec ${STACK}-ols bash -c "bt 16 && bt 1"
 	- docker exec ${STACK}-mail bash -c "bt 16 && bt 1"
 mass_commit:
-	- docker commit ${STACK} ${REPO};
-	- docker commit ${STACK}-apache ${REPO}-apache;
-	- docker commit ${STACK}-nginx ${REPO}-nginx;
-	- docker commit ${STACK}-ols ${REPO}-ols;
-	- docker commit ${STACK}-mail ${REPO}-mail;
+	- docker commit ${STACK} ${MASS_REPO};
+	- docker commit ${STACK}-apache ${MASS_REPO}-apache;
+	- docker commit ${STACK}-nginx ${MASS_REPO}-nginx;
+	- docker commit ${STACK}-ols ${MASS_REPO}-ols;
+	- docker commit ${STACK}-mail ${MASS_REPO}-mail;
 mass_rm:
 	- docker rm ${STACK} -f
 	- docker rm ${STACK}-apache -f
@@ -162,50 +162,59 @@ mass_rm:
 	- docker rm ${STACK}-mail -f
 	- docker rm ${STACK}_wt -f
 mass_push:
-	- docker push ${REPO};
-	- docker push ${REPO}-apache;
-	- docker push ${REPO}-nginx;
-	- docker push ${REPO}-ols;
-	- docker push ${REPO}-mail;
+	- docker push ${MASS_REPO};
+	- docker push ${MASS_REPO}-apache;
+	- docker push ${MASS_REPO}-nginx;
+	- docker push ${MASS_REPO}-ols;
+	- docker push ${MASS_REPO}-mail;
 
 mass_no_parallel_update_cycle: # to save resources
-	- docker run --name ${STACK}        -d ${REPO}
+	- docker pull   ${MASS_REPO};
+	- docker run --name ${STACK}      -d ${MASS_REPO}
 	- docker exec 		${STACK} bash -c "apt-get update -y"
 	- docker exec 		${STACK} bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK} bash -c "apt-get dist-upgrade -y"
 	- docker exec 		${STACK} bash -c "bt 16 && bt 1"
-	- docker commit 	${STACK} ${REPO};
+	- docker commit 	${STACK} ${MASS_REPO};
 	- docker rm 		${STACK} -f
-	- docker push ${REPO};
-	- docker run --name ${STACK}-apache        -d ${REPO}
+	- docker push   ${MASS_REPO};
+
+	- docker pull   ${MASS_REPO}-apache;
+	- docker run --name ${STACK}-apache      -d ${MASS_REPO}-apache
 	- docker exec 		${STACK}-apache bash -c "apt-get update -y"
 	- docker exec 		${STACK}-apache bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK}-apache bash -c "apt-get dist-upgrade -y"
 	- docker exec 		${STACK}-apache bash -c "bt 16 && bt 1"
-	- docker commit 	${STACK}-apache ${REPO};
+	- docker commit 	${STACK}-apache ${MASS_REPO};
 	- docker rm 		${STACK}-apache -f
-	- docker push ${REPO};
-	- docker run --name ${STACK}-nginx        -d ${REPO}
+	- docker push   ${MASS_REPO}-apache;
+
+	- docker pull   ${MASS_REPO}-nginx;
+	- docker run --name ${STACK}-nginx      -d ${MASS_REPO}-nginx
 	- docker exec 		${STACK}-nginx bash -c "apt-get update -y"
 	- docker exec 		${STACK}-nginx bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK}-nginx bash -c "apt-get dist-upgrade -y"
 	- docker exec 		${STACK}-nginx bash -c "bt 16 && bt 1"
-	- docker commit 	${STACK}-nginx ${REPO};
+	- docker commit 	${STACK}-nginx ${MASS_REPO};
 	- docker rm 		${STACK}-nginx -f
-	- docker push ${REPO};
-	- docker run --name ${STACK}-ols        -d ${REPO}
+	- docker push   ${MASS_REPO}-nginx;
+
+	- docker pull   ${MASS_REPO}-ols;
+	- docker run --name ${STACK}-ols      -d ${MASS_REPO}-ols 
 	- docker exec 		${STACK}-ols bash -c "apt-get update -y"
 	- docker exec 		${STACK}-ols bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK}-ols bash -c "apt-get dist-upgrade -y"
 	- docker exec 		${STACK}-ols bash -c "bt 16 && bt 1"
-	- docker commit 	${STACK}-ols ${REPO};
+	- docker commit 	${STACK}-ols ${MASS_REPO};
 	- docker rm 		${STACK}-ols -f
-	- docker push ${REPO};
-	- docker run --name ${STACK}-mail        -d ${REPO}
+	- docker push   ${MASS_REPO}-ols;
+
+	- docker pull   ${MASS_REPO}-mail;
+	- docker run --name ${STACK}-mail      -d ${MASS_REPO}-mail
 	- docker exec 		${STACK}-mail bash -c "apt-get update -y"
 	- docker exec 		${STACK}-mail bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK}-mail bash -c "apt-get dist-upgrade -y"
 	- docker exec 		${STACK}-mail bash -c "bt 16 && bt 1"
-	- docker commit 	${STACK}-mail ${REPO};
+	- docker commit 	${STACK}-mail ${MASS_REPO};
 	- docker rm 		${STACK}-mail -f
-	- docker push ${REPO};
+	- docker push   ${MASS_REPO}-mail;
