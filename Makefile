@@ -170,7 +170,7 @@ mass_push:
 
 mass_no_parallel_update_cycle: # to save resources
 	- docker pull   ${MASS_REPO};
-	- docker run --name ${STACK}      -d ${MASS_REPO}
+	- docker run --name ${STACK}      --env-file=./.env -d -p 7801:7800 -d ${MASS_REPO}
 	- docker exec 		${STACK} bash -c "apt-get update -y"
 	- docker exec 		${STACK} bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK} bash -c "apt-get dist-upgrade -y"
@@ -215,6 +215,100 @@ mass_no_parallel_update_cycle: # to save resources
 	- docker exec 		${STACK}-mail bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK}-mail bash -c "apt-get dist-upgrade -y"
 	- docker exec 		${STACK}-mail bash -c "bt 16 && bt 1"
+	- docker commit 	${STACK}-mail ${MASS_REPO};
+	- docker rm 		${STACK}-mail -f
+	- docker push   ${MASS_REPO}-mail;
+
+
+up_empty:
+	- docker pull   ${MASS_REPO};
+	- docker run --name ${STACK}   	  -p 7800:7800   -d ${MASS_REPO}
+	- docker exec 		${STACK} bash -c "apt-get update -y"
+	- docker exec 		${STACK} bash -c "apt-get upgrade -y"
+	- docker exec 		${STACK} bash -c "apt-get dist-upgrade -y"
+	- docker exec 		${STACK} bash -c "rm -f /tmp/update_to7.pl && curl -k https://node.aapanel.com/install/update_7.x_en.sh | bash"
+	- docker exec 		${STACK} bash -c "bt 16"
+	- docker exec 		${STACK} bash -c "bt 1"
+
+bash_empty:
+	- docker exec -it ${STACK} bash;
+
+push_empty:
+	- docker commit 	${STACK} ${MASS_REPO};
+	- docker rm 		${STACK} -f
+	- docker push   ${MASS_REPO};
+
+up_apache:
+	- docker pull   ${MASS_REPO}-apache;
+	- docker run --name ${STACK}-apache      -d ${MASS_REPO}-apache
+	- docker exec 		${STACK}-apache bash -c "apt-get update -y"
+	- docker exec 		${STACK}-apache bash -c "apt-get upgrade -y"
+	- docker exec 		${STACK}-apache bash -c "apt-get dist-upgrade -y"
+	- docker exec 		${STACK}-apache bash -c "rm -f /tmp/update_to7.pl && curl -k https://node.aapanel.com/install/update_7.x_en.sh | bash"
+	# - docker exec 		${STACK}-apache bash -c "bt 16"
+	- docker exec 		${STACK}-apache bash -c "bt 1"
+
+bash_apache:
+	- docker exec -it ${STACK}-apache bash;
+
+push_apache:
+	- docker commit 	${STACK}-apache ${MASS_REPO};
+	- docker rm 		${STACK}-apache -f
+	- docker push   ${MASS_REPO}-apache;
+
+
+up_nginx:
+	- docker pull   ${MASS_REPO}-nginx;
+	- docker run --name ${STACK}-nginx      -d ${MASS_REPO}-nginx
+	- docker exec 		${STACK}-nginx bash -c "apt-get update -y"
+	- docker exec 		${STACK}-nginx bash -c "apt-get upgrade -y"
+	- docker exec 		${STACK}-nginx bash -c "apt-get dist-upgrade -y"
+	- docker exec 		${STACK}-nginx bash -c "rm -f /tmp/update_to7.pl && curl -k https://node.aapanel.com/install/update_7.x_en.sh | bash"
+	- docker exec 		${STACK}-nginx bash -c "bt 16"
+	- docker exec 		${STACK}-nginx bash -c "bt 1"
+
+bash_nginx:
+	- docker exec -it ${STACK}-nginx bash;
+	
+push_nginx:
+	- docker commit 	${STACK}-nginx ${MASS_REPO};
+	- docker rm 		${STACK}-nginx -f
+	- docker push   ${MASS_REPO}-nginx;
+
+
+up_ols:
+	- docker pull   ${MASS_REPO}-ols;
+	- docker run --name ${STACK}-ols      -d ${MASS_REPO}-ols 
+	- docker exec 		${STACK}-ols bash -c "apt-get update -y"
+	- docker exec 		${STACK}-ols bash -c "apt-get upgrade -y"
+	- docker exec 		${STACK}-ols bash -c "apt-get dist-upgrade -y"
+	- docker exec 		${STACK}-ols bash -c "rm -f /tmp/update_to7.pl && curl -k https://node.aapanel.com/install/update_7.x_en.sh | bash"
+	- docker exec 		${STACK}-ols bash -c "bt 16"
+	- docker exec 		${STACK}-ols bash -c "bt 1"
+
+bash_ols:
+	- docker exec -it ${STACK}-ols bash;
+
+push_ols:
+	- docker commit 	${STACK}-ols ${MASS_REPO};
+	- docker rm 		${STACK}-ols -f
+	- docker push   ${MASS_REPO}-ols;
+
+
+up_mail:
+	- docker pull   ${MASS_REPO}-mail;
+	- docker run --name ${STACK}-mail      -d ${MASS_REPO}-mail
+	- docker exec 		${STACK}-mail bash -c "apt-get update -y"
+	- docker exec 		${STACK}-mail bash -c "apt-get upgrade -y"
+	- docker exec 		${STACK}-mail bash -c "apt-get dist-upgrade -y"
+	- docker exec 		${STACK}-mail bash -c "rm -f /tmp/update_to7.pl && curl -k https://node.aapanel.com/install/update_7.x_en.sh | bash"
+	- docker exec 		${STACK}-mail bash -c "bt 16"
+	- docker exec 		${STACK}-mail bash -c "bt 1"
+
+bash_mail:
+	- docker exec -it ${STACK}-mail bash;
+
+push_mail:
 	- docker commit 	${STACK}-mail ${MASS_REPO};
 	- docker rm 		${STACK}-mail -f
 	- docker push   ${MASS_REPO}-mail;
