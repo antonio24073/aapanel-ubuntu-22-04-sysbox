@@ -84,6 +84,9 @@ rm:
 bt:
 	- docker exec -it ${STACK} bt;
 
+bt16:
+	- docker exec -it ${STACK} bt16;
+
 bash:
 	- docker exec -it ${STACK} bash;
 	
@@ -169,12 +172,16 @@ mass_push:
 	- docker push ${MASS_REPO}-mail;
 
 mass_no_parallel_update_cycle: # to save resources
-	- docker pull   ${MASS_REPO};
-	- docker run --name ${STACK}      --env-file=./.env -d -p 7801:7800 -d ${MASS_REPO}
+	- echo ${DOCKERHUB_PASS} | docker login -u ${DOCKERHUB_USER} --password-stdin & wait
+
+	# - docker build --no-cache --pull -t ${MASS_REPO} ./docker-file
+	- docker run --name ${STACK}      -d ${MASS_REPO}
 	- docker exec 		${STACK} bash -c "apt-get update -y"
 	- docker exec 		${STACK} bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK} bash -c "apt-get dist-upgrade -y"
-	- docker exec 		${STACK} bash -c "bt 16 && bt 1"
+	- docker exec 		${STACK} bash -c "rm -f /tmp/update_to7.pl && curl -k https://node.aapanel.com/install/update_7.x_en.sh | bash"
+	- docker exec 		${STACK} bash -c "bt 16"
+	- docker exec 		${STACK} bash -c "bt 1"
 	- docker commit 	${STACK} ${MASS_REPO};
 	- docker rm 		${STACK} -f
 	- docker push   ${MASS_REPO};
@@ -184,8 +191,10 @@ mass_no_parallel_update_cycle: # to save resources
 	- docker exec 		${STACK}-apache bash -c "apt-get update -y"
 	- docker exec 		${STACK}-apache bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK}-apache bash -c "apt-get dist-upgrade -y"
-	- docker exec 		${STACK}-apache bash -c "bt 16 && bt 1"
-	- docker commit 	${STACK}-apache ${MASS_REPO};
+	- docker exec 		${STACK}-apache bash -c "rm -f /tmp/update_to7.pl && curl -k https://node.aapanel.com/install/update_7.x_en.sh | bash"
+	- docker exec 		${STACK}-apache bash -c "bt 16"
+	- docker exec 		${STACK}-apache bash -c "bt 1"
+	- docker commit 	${STACK}-apache ${MASS_REPO}-apache;
 	- docker rm 		${STACK}-apache -f
 	- docker push   ${MASS_REPO}-apache;
 
@@ -194,8 +203,9 @@ mass_no_parallel_update_cycle: # to save resources
 	- docker exec 		${STACK}-nginx bash -c "apt-get update -y"
 	- docker exec 		${STACK}-nginx bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK}-nginx bash -c "apt-get dist-upgrade -y"
+	- docker exec 		${STACK}-nginx bash -c "rm -f /tmp/update_to7.pl && curl -k https://node.aapanel.com/install/update_7.x_en.sh | bash"
 	- docker exec 		${STACK}-nginx bash -c "bt 16 && bt 1"
-	- docker commit 	${STACK}-nginx ${MASS_REPO};
+	- docker commit 	${STACK}-nginx ${MASS_REPO}-nginx;
 	- docker rm 		${STACK}-nginx -f
 	- docker push   ${MASS_REPO}-nginx;
 
@@ -204,8 +214,10 @@ mass_no_parallel_update_cycle: # to save resources
 	- docker exec 		${STACK}-ols bash -c "apt-get update -y"
 	- docker exec 		${STACK}-ols bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK}-ols bash -c "apt-get dist-upgrade -y"
-	- docker exec 		${STACK}-ols bash -c "bt 16 && bt 1"
-	- docker commit 	${STACK}-ols ${MASS_REPO};
+	- docker exec 		${STACK}-ols bash -c "rm -f /tmp/update_to7.pl && curl -k https://node.aapanel.com/install/update_7.x_en.sh | bash"
+	- docker exec 		${STACK}-ols bash -c "bt 16"
+	- docker exec 		${STACK}-ols bash -c "bt 1"
+	- docker commit 	${STACK}-ols ${MASS_REPO}-ols;
 	- docker rm 		${STACK}-ols -f
 	- docker push   ${MASS_REPO}-ols;
 
@@ -214,15 +226,17 @@ mass_no_parallel_update_cycle: # to save resources
 	- docker exec 		${STACK}-mail bash -c "apt-get update -y"
 	- docker exec 		${STACK}-mail bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK}-mail bash -c "apt-get dist-upgrade -y"
-	- docker exec 		${STACK}-mail bash -c "bt 16 && bt 1"
-	- docker commit 	${STACK}-mail ${MASS_REPO};
+	- docker exec 		${STACK}-mail bash -c "rm -f /tmp/update_to7.pl && curl -k https://node.aapanel.com/install/update_7.x_en.sh | bash"
+	- docker exec 		${STACK}-mail bash -c "bt 16"
+	- docker exec 		${STACK}-mail bash -c "bt 1"
+	- docker commit 	${STACK}-mail ${MASS_REPO}-mail;
 	- docker rm 		${STACK}-mail -f
 	- docker push   ${MASS_REPO}-mail;
 
 
 up_empty:
 	- docker pull   ${MASS_REPO};
-	- docker run --name ${STACK}   	  -p 7800:7800   -d ${MASS_REPO}
+	- docker run --name ${STACK}   	  -d ${MASS_REPO}
 	- docker exec 		${STACK} bash -c "apt-get update -y"
 	- docker exec 		${STACK} bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK} bash -c "apt-get dist-upgrade -y"
@@ -245,7 +259,7 @@ up_apache:
 	- docker exec 		${STACK}-apache bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK}-apache bash -c "apt-get dist-upgrade -y"
 	- docker exec 		${STACK}-apache bash -c "rm -f /tmp/update_to7.pl && curl -k https://node.aapanel.com/install/update_7.x_en.sh | bash"
-	# - docker exec 		${STACK}-apache bash -c "bt 16"
+	- docker exec 		${STACK}-apache bash -c "bt 16"
 	- docker exec 		${STACK}-apache bash -c "bt 1"
 
 bash_apache:
