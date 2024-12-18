@@ -23,7 +23,7 @@ pull:
 	- docker pull ${REPO}
 
 run:
-	- docker run -d --name ${STACK} ${REPO}
+	- docker run --runtime=sysbox-runc -d --name ${STACK} ${REPO}
 
 mkdir:
 	- mkdir -p ./vol/www/wwwroot
@@ -112,17 +112,17 @@ mass_pull:
 	- docker pull ${MASS_REPO}-ols;
 	- docker pull ${MASS_REPO}-mail;
 mass_up:
-	- docker run --name ${STACK}        --env-file=./.env -d -p 7801:7800 ${MASS_REPO}
-	- docker run --name ${STACK}-apache --env-file=./.env -d -p 7802:7800 ${MASS_REPO}-apache
-	- docker run --name ${STACK}-nginx  --env-file=./.env -d -p 7803:7800 ${MASS_REPO}-nginx
-	- docker run --name ${STACK}-ols    --env-file=./.env -d -p 7804:7800 ${MASS_REPO}-ols
-	- docker run --name ${STACK}-mail   --env-file=./.env -d -p 7805:7800 ${MASS_REPO}-mail
+	- docker run --name ${STACK}        --runtime=sysbox-runc --env-file=./.env -d -p 7801:7800 ${MASS_REPO}
+	- docker run --name ${STACK}-apache --runtime=sysbox-runc --env-file=./.env -d -p 7802:7800 ${MASS_REPO}-apache
+	- docker run --name ${STACK}-nginx  --runtime=sysbox-runc --env-file=./.env -d -p 7803:7800 ${MASS_REPO}-nginx
+	- docker run --name ${STACK}-ols    --runtime=sysbox-runc --env-file=./.env -d -p 7804:7800 ${MASS_REPO}-ols
+	- docker run --name ${STACK}-mail   --runtime=sysbox-runc --env-file=./.env -d -p 7805:7800 ${MASS_REPO}-mail
 mass_run: 
-	- docker run --name ${STACK}        --env-file=./.env -d ${MASS_REPO}
-	- docker run --name ${STACK}-apache --env-file=./.env -d ${MASS_REPO}-apache
-	- docker run --name ${STACK}-nginx  --env-file=./.env -d ${MASS_REPO}-nginx
-	- docker run --name ${STACK}-ols    --env-file=./.env -d ${MASS_REPO}-ols
-	- docker run --name ${STACK}-mail   --env-file=./.env -d ${MASS_REPO}-mail
+	- docker run --name ${STACK}        --runtime=sysbox-runc --env-file=./.env -d ${MASS_REPO}
+	- docker run --name ${STACK}-apache --runtime=sysbox-runc --env-file=./.env -d ${MASS_REPO}-apache
+	- docker run --name ${STACK}-nginx  --runtime=sysbox-runc --env-file=./.env -d ${MASS_REPO}-nginx
+	- docker run --name ${STACK}-ols    --runtime=sysbox-runc --env-file=./.env -d ${MASS_REPO}-ols
+	- docker run --name ${STACK}-mail   --runtime=sysbox-runc --env-file=./.env -d ${MASS_REPO}-mail
 mass_update:
 	- docker exec ${STACK} bash -c "apt-get update -y"
 	- docker exec ${STACK}-apache bash -c "apt-get update -y"
@@ -170,7 +170,7 @@ mass_push:
 
 mass_no_parallel_update_cycle: # to save resources
 	- docker pull   ${MASS_REPO};
-	- docker run --name ${STACK}      --env-file=./.env -d -p 7801:7800 -d ${MASS_REPO}
+	- docker run --name ${STACK} --runtime=sysbox-runc --env-file=./.env -d -p 7801:7800 -d ${MASS_REPO}
 	- docker exec 		${STACK} bash -c "apt-get update -y"
 	- docker exec 		${STACK} bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK} bash -c "apt-get dist-upgrade -y"
@@ -180,49 +180,49 @@ mass_no_parallel_update_cycle: # to save resources
 	- docker push   ${MASS_REPO};
 
 	- docker pull   ${MASS_REPO}-apache;
-	- docker run --name ${STACK}-apache      -d ${MASS_REPO}-apache
+	- docker run --name ${STACK}-apache --runtime=sysbox-runc -d ${MASS_REPO}-apache
 	- docker exec 		${STACK}-apache bash -c "apt-get update -y"
 	- docker exec 		${STACK}-apache bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK}-apache bash -c "apt-get dist-upgrade -y"
 	- docker exec 		${STACK}-apache bash -c "bt 16 && bt 1"
-	- docker commit 	${STACK}-apache ${MASS_REPO};
+	- docker commit 	${STACK}-apache ${MASS_REPO}-apache;
 	- docker rm 		${STACK}-apache -f
 	- docker push   ${MASS_REPO}-apache;
 
 	- docker pull   ${MASS_REPO}-nginx;
-	- docker run --name ${STACK}-nginx      -d ${MASS_REPO}-nginx
+	- docker run --name ${STACK}-nginx --runtime=sysbox-runc -d ${MASS_REPO}-nginx
 	- docker exec 		${STACK}-nginx bash -c "apt-get update -y"
 	- docker exec 		${STACK}-nginx bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK}-nginx bash -c "apt-get dist-upgrade -y"
 	- docker exec 		${STACK}-nginx bash -c "bt 16 && bt 1"
-	- docker commit 	${STACK}-nginx ${MASS_REPO};
+	- docker commit 	${STACK}-nginx ${MASS_REPO}-nginx;
 	- docker rm 		${STACK}-nginx -f
 	- docker push   ${MASS_REPO}-nginx;
 
 	- docker pull   ${MASS_REPO}-ols;
-	- docker run --name ${STACK}-ols      -d ${MASS_REPO}-ols 
+	- docker run --name ${STACK}-ols --runtime=sysbox-runc -d ${MASS_REPO}-ols 
 	- docker exec 		${STACK}-ols bash -c "apt-get update -y"
 	- docker exec 		${STACK}-ols bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK}-ols bash -c "apt-get dist-upgrade -y"
 	- docker exec 		${STACK}-ols bash -c "bt 16 && bt 1"
-	- docker commit 	${STACK}-ols ${MASS_REPO};
+	- docker commit 	${STACK}-ols ${MASS_REPO}-ols;
 	- docker rm 		${STACK}-ols -f
 	- docker push   ${MASS_REPO}-ols;
 
 	- docker pull   ${MASS_REPO}-mail;
-	- docker run --name ${STACK}-mail      -d ${MASS_REPO}-mail
+	- docker run --name ${STACK}-mail --runtime=sysbox-runc -d ${MASS_REPO}-mail
 	- docker exec 		${STACK}-mail bash -c "apt-get update -y"
 	- docker exec 		${STACK}-mail bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK}-mail bash -c "apt-get dist-upgrade -y"
 	- docker exec 		${STACK}-mail bash -c "bt 16 && bt 1"
-	- docker commit 	${STACK}-mail ${MASS_REPO};
+	- docker commit 	${STACK}-mail ${MASS_REPO}-mail;
 	- docker rm 		${STACK}-mail -f
 	- docker push   ${MASS_REPO}-mail;
 
 
 up_empty:
 	- docker pull   ${MASS_REPO};
-	- docker run --name ${STACK}   	  -p 7800:7800   -d ${MASS_REPO}
+	- docker run --name ${STACK} --runtime=sysbox-runc -p 7800:7800   -d ${MASS_REPO}
 	- docker exec 		${STACK} bash -c "apt-get update -y"
 	- docker exec 		${STACK} bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK} bash -c "apt-get dist-upgrade -y"
@@ -240,7 +240,7 @@ push_empty:
 
 up_apache:
 	- docker pull   ${MASS_REPO}-apache;
-	- docker run --name ${STACK}-apache      -d ${MASS_REPO}-apache
+	- docker run --name ${STACK}-apache --runtime=sysbox-runc -d ${MASS_REPO}-apache
 	- docker exec 		${STACK}-apache bash -c "apt-get update -y"
 	- docker exec 		${STACK}-apache bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK}-apache bash -c "apt-get dist-upgrade -y"
@@ -259,7 +259,7 @@ push_apache:
 
 up_nginx:
 	- docker pull   ${MASS_REPO}-nginx;
-	- docker run --name ${STACK}-nginx      -d ${MASS_REPO}-nginx
+	- docker run --name ${STACK}-nginx --runtime=sysbox-runc -d ${MASS_REPO}-nginx
 	- docker exec 		${STACK}-nginx bash -c "apt-get update -y"
 	- docker exec 		${STACK}-nginx bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK}-nginx bash -c "apt-get dist-upgrade -y"
@@ -278,7 +278,7 @@ push_nginx:
 
 up_ols:
 	- docker pull   ${MASS_REPO}-ols;
-	- docker run --name ${STACK}-ols      -d ${MASS_REPO}-ols 
+	- docker run --name ${STACK}-ols --runtime=sysbox-runc -d ${MASS_REPO}-ols 
 	- docker exec 		${STACK}-ols bash -c "apt-get update -y"
 	- docker exec 		${STACK}-ols bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK}-ols bash -c "apt-get dist-upgrade -y"
@@ -297,7 +297,7 @@ push_ols:
 
 up_mail:
 	- docker pull   ${MASS_REPO}-mail;
-	- docker run --name ${STACK}-mail      -d ${MASS_REPO}-mail
+	- docker run --name ${STACK}-mail --runtime=sysbox-runc -d ${MASS_REPO}-mail
 	- docker exec 		${STACK}-mail bash -c "apt-get update -y"
 	- docker exec 		${STACK}-mail bash -c "apt-get upgrade -y"
 	- docker exec 		${STACK}-mail bash -c "apt-get dist-upgrade -y"
