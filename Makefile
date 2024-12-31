@@ -91,19 +91,24 @@ bash:
 	- docker exec -it ${STACK} bash;
 	
 perm:
-	- docker exec -u 0 ${STACK} chown -R mysql:mysql /www/server/data; 
-	- docker exec -u 0 ${STACK} chown root:root -R /www/server/panel/vhost; 
-	- docker exec -u 0 ${STACK} chown root:root -R /www/server/panel/data; 
-	- docker exec -u 0 ${STACK} chown ${AAP_USER}:www /www/wwwroot; 
-	- docker exec -u 0 ${STACK} find /www/wwwroot -type d -exec chmod 775 {} \; ; 
-	- docker exec -u 0 ${STACK} find /www/wwwroot -type f -exec chmod 664 {} \; ; 
-	- docker exec -u 0 ${STACK} chown root:root /www/wwwroot/*/.user.ini; 
-	- docker exec -u 0 ${STACK} chmod 440 /www/wwwroot/*/.user.ini; 
-	- docker exec -u 0 ${STACK} chown www:www /www/wwwlogs; 
-	- docker exec -u 0 ${STACK} chown root:root /www/backup; 
-	- docker exec -u 0 ${STACK} chown vmail:mail /www/vmail; 
-	- docker exec -u 0 ${STACK} chown ${LINUX_USER_NAME}:${LINUX_USER_NAME} /home/${LINUX_USER_NAME}; 
-	- docker exec -u 0 ${STACK} chown root:root /root; 
+	- docker exec -u 0 ${STACK} chown -R mysql:mysql /www/server/data;
+	- docker exec -u 0 ${STACK} chown root:root -R /www/server/panel/vhost;
+	- docker exec -u 0 ${STACK} chown root:root -R /www/server/panel/data;
+	- docker exec -u 0 ${STACK} chown www:www -R /www/wwwroot;
+	- docker exec -u 0 ${STACK} chown root:root /www/wwwroot/*/.user.ini;
+	- docker exec -u 0 ${STACK} sh -c "chmod 440 /www/wwwroot/*/.user.ini";
+	- docker exec -u 0 ${STACK} sh -c "chmod 440 /www/wwwroot/*/wp-config.php";
+	- docker exec -u 0 ${STACK} sh -c "chmod 604 /www/wwwroot/*/.htaccess";
+	- docker exec -u 0 ${STACK} sh -c "chmod 600 /www/wwwroot/*/php.ini";
+	- docker exec -u 0 ${STACK} sh -c "chmod 711 /www/wwwroot/*/cgi-bin/php.cgi";
+	- docker exec -u 0 ${STACK} sh -c "chmod 100 /www/wwwroot/*/cgi-bin/php5.cgi";
+	- docker exec -u 0 ${STACK} chown www:www -R /www/wwwlogs;
+	- docker exec -u 0 ${STACK} chmod 700 -R /www/wwwlogs;
+	- docker exec -u 0 ${STACK} chown root:root -R /www/backup;
+	- docker exec -u 0 ${STACK} chmod 600 -R /www/backup;
+	- docker exec -u 0 ${STACK} chown vmail:mail /www/vmail;
+	- docker exec -u 0 ${STACK} chown ${LINUX_USER_NAME}:${LINUX_USER_NAME} /home/${LINUX_USER_NAME};
+	- docker exec -u 0 ${STACK} chown root:root /root;
 
 rmdir:
 	- sudo rm -Rf ./vol/
