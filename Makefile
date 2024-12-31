@@ -111,12 +111,27 @@ mass_pull:
 	- docker pull ${MASS_REPO}-nginx;
 	- docker pull ${MASS_REPO}-ols;
 	- docker pull ${MASS_REPO}-mail;
+mass_up_default_repo:
+	- docker run --name ${STACK}        --runtime=sysbox-runc --env-file=./.env -d -p 7801:7800 ${MASS_REPO}
+	- docker run --name ${STACK}-apache --runtime=sysbox-runc --env-file=./.env -d -p 7802:7800 ${MASS_REPO}-apache 
+	- docker run --name ${STACK}-nginx  --runtime=sysbox-runc --env-file=./.env -d -p 7803:7800 ${MASS_REPO}-apache 
+	- docker run --name ${STACK}-ols    --runtime=sysbox-runc --env-file=./.env -d -p 7804:7800 ${MASS_REPO}-apache 
+	- docker run --name ${STACK}-mail   --runtime=sysbox-runc --env-file=./.env -d -p 7805:7800 ${MASS_REPO}-apache
 mass_up:
 	- docker run --name ${STACK}        --runtime=sysbox-runc --env-file=./.env -d -p 7801:7800 ${MASS_REPO}
 	- docker run --name ${STACK}-apache --runtime=sysbox-runc --env-file=./.env -d -p 7802:7800 ${MASS_REPO}-apache
 	- docker run --name ${STACK}-nginx  --runtime=sysbox-runc --env-file=./.env -d -p 7803:7800 ${MASS_REPO}-nginx
 	- docker run --name ${STACK}-ols    --runtime=sysbox-runc --env-file=./.env -d -p 7804:7800 ${MASS_REPO}-ols
 	- docker run --name ${STACK}-mail   --runtime=sysbox-runc --env-file=./.env -d -p 7805:7800 ${MASS_REPO}-mail
+
+# to check if commit in mass_up is working 
+mass_up2:
+	- docker run --name ${STACK}2        --runtime=sysbox-runc --env-file=./.env -d -p 7806:7800 ${MASS_REPO}
+	- docker run --name ${STACK}2-apache --runtime=sysbox-runc --env-file=./.env -d -p 7807:7800 ${MASS_REPO}-apache
+	- docker run --name ${STACK}2-nginx  --runtime=sysbox-runc --env-file=./.env -d -p 7808:7800 ${MASS_REPO}-nginx
+	- docker run --name ${STACK}2-ols    --runtime=sysbox-runc --env-file=./.env -d -p 7809:7800 ${MASS_REPO}-ols
+	- docker run --name ${STACK}2-mail   --runtime=sysbox-runc --env-file=./.env -d -p 7810:7800 ${MASS_REPO}-mail
+
 mass_run: 
 	- docker run --name ${STACK}        --runtime=sysbox-runc --env-file=./.env -d ${MASS_REPO}
 	- docker run --name ${STACK}-apache --runtime=sysbox-runc --env-file=./.env -d ${MASS_REPO}-apache
@@ -161,6 +176,12 @@ mass_rm:
 	- docker rm ${STACK}-ols -f
 	- docker rm ${STACK}-mail -f
 	- docker rm ${STACK}_wt -f
+mass_rm2:
+	- docker rm ${STACK}2 -f
+	- docker rm ${STACK}2-apache -f
+	- docker rm ${STACK}2-nginx -f
+	- docker rm ${STACK}2-ols -f
+	- docker rm ${STACK}2-mail -f
 mass_push:
 	- docker push ${MASS_REPO};
 	- docker push ${MASS_REPO}-apache;

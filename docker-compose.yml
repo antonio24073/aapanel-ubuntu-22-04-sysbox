@@ -4,16 +4,16 @@ services:
     labels:
       traefik.enable: false
     user: root
-    image: antonio24073/aapanel:ubuntu-22-04-sysbox-apache
+    image: ${REPO}
     container_name: aapanel
     ports: 
-      - ${AAP_PORT}:7800
-      - ${FTP_PORT}:21
-      - ${SSH_PORT}:22
-      - 443:443
-      - 80:80
-      - ${PMA_PORT}:888
-      - ${PMAS_PORT}:887
+      - 0.0.0.0:${AAP_PORT}:7800
+      - 0.0.0.0:${FTP_PORT}:21
+      - 0.0.0.0:${SSH_PORT}:22
+      - 0.0.0.0:443:443
+      - 0.0.0.0:80:80
+      - 0.0.0.0:${PMA_PORT}:888
+      - 0.0.0.0:${PMAS_PORT}:887
 
       # mail ports:
       # - 587:587

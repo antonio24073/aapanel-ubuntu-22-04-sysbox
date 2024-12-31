@@ -62,7 +62,7 @@ COPY ./aapanel-start.service /etc/systemd/system/aapanel-start.service
 
 RUN systemctl enable aapanel-start
 
-RUN killall -u admin &&  deluser --remove-home -f admin &&  userdel admin
+RUN deluser --remove-home -f admin
 
 ENTRYPOINT ["/bin/sh", "/provision/entrypoint/entrypoint.sh"]
 
