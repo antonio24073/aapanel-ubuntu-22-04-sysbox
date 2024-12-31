@@ -62,6 +62,8 @@ COPY ./aapanel-start.service /etc/systemd/system/aapanel-start.service
 
 RUN systemctl enable aapanel-start
 
+RUN deluser --remove-home -f admin
+
 ENTRYPOINT ["/bin/sh", "/provision/entrypoint/entrypoint.sh"]
 
 EXPOSE 7800 21 22 443 80 888

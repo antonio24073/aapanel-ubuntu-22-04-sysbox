@@ -9,11 +9,20 @@ Sysbox is needed to nested docker containers.
 From the beginning:
 
 ```sh
-wget https://downloads.nestybox.com/sysbox/releases/v0.6.4/sysbox-ce_0.6.4-0.linux_amd64.deb
-sha256sum sysbox-ce_0.6.4-0.linux_amd64.deb
+wget https://downloads.nestybox.com/sysbox/releases/v0.6.5/sysbox-ce_0.6.5-0.linux_amd64.deb
+sha256sum sysbox-ce_0.6.5-0.linux_amd64.deb
 docker rm $(docker ps -a -q) -f
 sudo apt-get install jq
-sudo apt-get install ./sysbox-ce_0.6.4-0.linux_amd64.deb
+```
+
+The official documentation says:
+```
+sudo apt-get install ./sysbox-ce_0.6.5-0.linux_amd64.deb
+```
+
+But if get an error do:
+```
+sudo dpkg -i ./sysbox-ce_0.6.5-0.linux_amd64.deb
 ```
 
 After these previous steps present in the sysbox docs, you need to do:
@@ -31,6 +40,10 @@ sudo systemctl enable sysbox
 Check if all the sub-services is started:
 ```sh
 sudo systemctl status sysbox -n20
+```
+
+```
+sudo mkdir /etc/docker
 ```
 
 Create a file named  `/etc/docker/daemon.json` or add inside it.
