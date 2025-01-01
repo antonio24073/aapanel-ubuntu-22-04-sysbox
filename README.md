@@ -1,53 +1,58 @@
-# Aapanel
+# Aapanel Docker Compose
 
-Aapanel docker compose file to customize
+**Updated for Ubuntu 22.04**
 
-Update: Ubuntu 22.04
+## Available Image Tags
 
-5 tags:
+- **Clean**: `antonio24073/aapanel-ubuntu-22-04-sysbox`  
+- **Apache**: `antonio24073/aapanel-ubuntu-22-04-sysbox-apache`  
+- **Nginx**: `antonio24073/aapanel-ubuntu-22-04-sysbox-nginx`  
+- **OpenLiteSpeed**: `antonio24073/aapanel-ubuntu-22-04-sysbox-ols`  
+- **Mail**: `antonio24073/aapanel-ubuntu-22-04-sysbox-mail`  
 
-- clean: antonio24073/aapanel-ubuntu-22-04-sysbox
-- apache: antonio24073/aapanel-ubuntu-22-04-sysbox-apache
-- nginx: antonio24073/aapanel-ubuntu-22-04-sysbox-nginx
-- open litespeed: antonio24073/aapanel-ubuntu-22-04-sysbox-ols
-- mail: antonio24073/aapanel-ubuntu-22-04-sysbox-mail
+---
 
-# Requirements
+## Prerequisites
 
-## Install sysbox
+### Install Sysbox  
+Follow the installation guide for Docker Sysbox: [Sysbox Installation Help](https://github.com/antonio24073/aapanel-ubuntu-22-04-sysbox/tree/main/docs)
 
-Install docker sysbox =>> [help](https://github.com/antonio24073/aapanel-ubuntu-22-04-sysbox/tree/main/docs)
+---
 
-## Config
+## Configuration
 
-Rename `.env.example` to `.env` and change the variables
+1. Rename `.env.example` to `.env`.  
+2. Modify the variables in the `.env` file as needed.  
 
-## Run
+---
 
+## Usage
+
+### Build and Run  
+Execute the following commands:  
+```bash
+make build  
+make mkdir  
+make up  
+make perm  
+make bt  
 ```
-make build
-make mkdir
-make up
-make perm
-make bt
-14
+
+### Save Aapanel Changes  
+To commit changes to the Docker image:  
+```bash
+make commit  
 ```
 
-## Record changes to aapanel in the docker image
+### Stop and Remove  
+To stop and remove the container:  
+```bash
+make rm  
+```  
+**Note:** If you want to run `make up` again, ensure you execute `make rm` first.  
 
-```
-make commit
-```
+---
 
-## Stop
-
-```
-make rm
-```
-To "make up" twice, you need "make rm" first.
-
-## Read this:
-
-https://hub.docker.com/r/antonio24073/aapanel
-
-https://github.com/antonio24073/aapanel-updater
+## Additional Resources  
+- [Docker Hub Repository](https://hub.docker.com/r/antonio24073/aapanel)  
+- [Updater Github Repository](https://github.com/antonio24073/aapanel-updater)
