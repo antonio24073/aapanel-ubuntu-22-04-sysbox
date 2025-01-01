@@ -12,8 +12,6 @@ Update: Ubuntu 22.04
 - open litespeed: antonio24073/aapanel-ubuntu-22-04-sysbox-ols
 - mail: antonio24073/aapanel-ubuntu-22-04-sysbox-mail
 
-The mail tag has roundcube and the one-click install needs nginx and mysql 5.7. So it's a nginx modified. But it works in apache too. Only the auto install button that do not works. But it has another one-click install too into app store.
-
 # Requirements
 
 ## Install sysbox
