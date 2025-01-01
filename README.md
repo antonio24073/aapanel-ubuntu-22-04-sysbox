@@ -16,7 +16,7 @@ Update: Ubuntu 22.04
 
 ## Install sysbox
 
-Install docker sysbox or remove it from `Dockerfile` and `docker-compose.yml` =>> [help](https://github.com/antonio24073/aapanel-ubuntu-22-04-sysbox/tree/main/docs)
+Install docker sysbox =>> [help](https://github.com/antonio24073/aapanel-ubuntu-22-04-sysbox/tree/main/docs)
 
 ## Config
 
