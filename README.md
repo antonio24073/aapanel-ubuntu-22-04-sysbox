@@ -55,4 +55,4 @@ make rm
 
 ## Additional Resources  
 - [Docker Hub Repository](https://hub.docker.com/r/antonio24073/aapanel)  
-- [Updater Github Repository](https://github.com/antonio24073/aapanel-updater)
+- [Docker Image Auto Updater Repository](https://github.com/antonio24073/aapanel-updater)
